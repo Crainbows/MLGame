@@ -11,8 +11,8 @@ fps_display.label.font_size = 50
 main_batch = pyglet.graphics.Batch()
 player_image = pyglet.image.load('res/Car_1_01.png')
 player = pyglet.sprite.Sprite(player_image, x=50, y=50, batch=main_batch)
-player.scale_y = 0.1
-player.scale_x = 0.1
+player.scale_y = 0.05
+player.scale_x = 0.05
 
 player.image.anchor_x = player.image.width / 2
 player.image.anchor_y = player.image.height / 2
@@ -22,6 +22,7 @@ left = False
 forward = False
 backward = False
 player_speed = 300
+player_turning_speed = 2
 
 
 @window.event
@@ -63,12 +64,12 @@ def player_move(entity, dt):
         entity.y += math.cos(math.radians(entity.rotation % 360)) * player_speed * dt
         entity.x += math.sin(math.radians(entity.rotation % 360)) * player_speed * dt
     if backward and entity.y > 0:
-        entity.y += math.sin(math.radians(entity.rotation % 360)) * player_speed * dt
-        entity.x += math.cos(math.radians(entity.rotation % 360)) * player_speed * dt
+        entity.y -= math.cos(math.radians(entity.rotation % 360)) * player_speed * dt
+        entity.x -= math.sin(math.radians(entity.rotation % 360)) * player_speed * dt
     if (left and forward) or (right and backward):
-        entity.rotation -= 1
+        entity.rotation -= player_turning_speed
     if (right and forward) or (left and backward):
-        entity.rotation += 1
+        entity.rotation += player_turning_speed
 
 
 
